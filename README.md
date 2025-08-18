@@ -88,6 +88,27 @@ $img = "https://cdn.pixabay.com/photo/2014/09/19/21/47/chihuahua-453063_1280.jpg
 $body = @{ image_url = $img } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/predict" -Body $body -ContentType "application/json"
 ```
+#### Postman
+Realización de pruebas en Postman de la siguiente manera:
+
+1. Abrir Postman → Import → Raw text y se importan dos archivos json:
+    - **Colección:** ```MuffinsChihuahuasAPI.postman_collection.json```.
+    - **Entorno remoto:** ```MuffinsChihuahuasAPI.remote_environment.json```
+
+2. Seleccionar el entorno “Muffins API – Remote” 
+3. Ejecutar en orden:
+    - Health → 200 con ```{ "status": "ok" }```
+    - Predict (URL → muffin) → 200 con ```label```, ```score```, ```probabilities```
+    - Predict (URL → chihuahua) → 200 con ```label```, ```score```, ```probabilities```
+    - Predict (Base64) → 200 (pegar base64 en la variable ```sample_b64``` del entorno si se desea probar este caso)
+    
+    Los resultados obtenidos se ven en la siguiente imagen:
+<img src="./assets/prueba-postman.png"/>
+
+4. Cada request incluye tests automáticos (status 200, campos, etc).
+
+*Nota: si alguna URL pública da 403/404 (hotlinking), usar otra imagen o el caso Base64.*
+
 
 ### Cómo hacer peticiones a la API (payloads)
 
