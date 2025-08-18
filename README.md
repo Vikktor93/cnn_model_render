@@ -1,3 +1,10 @@
+<p align="left">
+   <img src="https://img.shields.io/badge/Status-En%20Desarrollo-green?style=plastic">
+   <img src="https://img.shields.io/badge/Python-3776AB?style=plastic&logo=python&logoColor=white"/>
+   <img src="https://img.shields.io/badge/Jupyter-%23e58f1a.svg?style=plastic&logo=Jupyter&logoColor=white"/>
+
+<img src="./assets/banner-cnn-render.png"/>
+
 ## **Muffins vs Chihuahuas — API de Predicción (FastAPI)**
 ### **Tarea 2 - Desarrollo de Proyectos y Productos de Datos**
 
@@ -27,13 +34,12 @@ El modelo fue entrenado para clasificación binaria con salida ```sigmoid(1)```,
 │  └─ train_cnn.py     # entrenamiento + exportación de artifacts
 ├─ environment.yml     # entorno Conda (recomendado)
 ├─ requirements.txt    # (para Render u otros entornos con pip)
-├─ render.yaml         # blueprint de Render (opcional)
 └─ README.md
 ```
 
 ### Requisitos
 
-- **Recomendado (local):** Conda + Python 3.10.18
+- **Recomendado (local):** Conda + Python 3.10.8
 - **TensorFlow: 2.10.0** (compatibilidad con NumPy 1.23.5)
 - **FastAPI + Uvicorn + Pydantic + Pillow + Requests**
 
