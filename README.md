@@ -142,3 +142,38 @@ python client/client.py
 ```client/client.py``` imprime entrada y salida por cada request.
 
  ***Estado:** probado localmente (Uvicorn) y en producción (Render) con respuestas correctas*
+
+
+### Despliegue en Render
+
+**URL:** https://cnn-model-render.onrender.com
+
+#### Web Service (Desde UI Render)
+
+- **Build Command:** pip install -r requirements.txt
+- **Start Command:** ```uvicorn app.main:app --host 0.0.0.0 --port $PORT```
+- **Environment Variables:**
+    - ```PYTHON_VERSION=3.10.8```
+    - ```IMG_SIZE=128```
+    - ```MODEL_PATH=artifacts/model.keras```
+    - ```LABELS_PATH=artifacts/labels.json```
+    - ```BINARY_SIGMOID=true```
+    - ```POSITIVE_CLASS=<clase_en_indice_1> (ejemplo: muffin)```
+    - ```ALLOW_ORIGINS=*```
+
+#### Verificación en producción
+
+- **Health:** GET https://cnn-model-render.onrender.com/health → {"status":"ok"}
+- **Swagger UI:** GET https://cnn-model-render.onrender.com/docs
+- Ejemplo (PowerShell):
+    ```bash
+    $service = "https://cnn-model-render.onrender.com"
+    Invoke-RestMethod -Method Get -Uri "$service/health"
+    $img = "https://recetaamericana.com/wp-content/uploads/2022/07/mejor-magdalenas-chispas-chocolate-300x300.jpg"
+    $body = @{ image_url = $img } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$service/predict" -Body $body -ContentType "application/json"
+    ```
+
+### Información Extra
+
+Este es un proyecto educativo orientado a mostrar buenas prácticas de empaquetado y despliegue de un modelo de Machine Learning como servicio web. Si necesitas reproducir el entrenamiento, ver ```scripts/train_cnn.py``` y la estructura del dataset en ```data/```.
