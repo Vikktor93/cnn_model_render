@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "Muffins vs Chihuahuas API (Local)",
+    "_postman_id": "4c7d4a0e-9f6f-4f1e-9b0a-000000000001",
+    "description": "Colección para probar la API local: /health y /predict (por URL y base64). Incluye tests básicos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Body correcto', function () { pm.expect(json.status).to.eql('ok'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Predict (URL → muffin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"image_url\": \"https://recetaamericana.com/wp-content/uploads/2022/07/mejor-magdalenas-chispas-chocolate-300x300.jpg\"\n}"
+        },
+        "url": "{{baseUrl}}/predict",
+        "description": "Prueba de una imagen pública de muffin"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Campos esperados', function () {",
+              "  pm.expect(json).to.have.property('label');",
+              "  pm.expect(json).to.have.property('score');",
+              "  pm.expect(json).to.have.property('probabilities');",
+              "});",
+              "const probs = Object.values(json.probabilities || {});",
+              "const sum = probs.reduce((a,b)=>a+b,0);",
+              "pm.test('Probabilidades suman ~1', function(){ pm.expect(Math.abs(sum-1)).to.be.below(1e-2); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Predict (URL → chihuahua)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"image_url\": \"https://cdn.pixabay.com/photo/2014/09/19/21/47/chihuahua-453063_1280.jpg\"\n}"
+        },
+        "url": "{{baseUrl}}/predict",
+        "description": "Prueba de una imagen pública de chihuahua"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Campos esperados', function () {",
+              "  pm.expect(json).to.have.property('label');",
+              "  pm.expect(json).to.have.property('score');",
+              "  pm.expect(json).to.have.property('probabilities');",
+              "});",
+              "const probs = Object.values(json.probabilities || {});",
+              "const sum = probs.reduce((a,b)=>a+b,0);",
+              "pm.test('Probabilidades suman ~1', function(){ pm.expect(Math.abs(sum-1)).to.be.below(1e-2); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Predict (Base64)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"image_b64\": \"{{sample_b64}}\"\n}"
+        },
+        "url": "{{baseUrl}}/predict",
+        "description": "Pega una imagen codificada en base64 en la variable de entorno sample_b64."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('Campos esperados', function () {",
+              "  pm.expect(json).to.have.property('label');",
+              "  pm.expect(json).to.have.property('score');",
+              "  pm.expect(json).to.have.property('probabilities');",
+              "});",
+              "const probs = Object.values(json.probabilities || {});",
+              "const sum = probs.reduce((a,b)=>a+b,0);",
+              "pm.test('Probabilidades suman ~1', function(){ pm.expect(Math.abs(sum-1)).to.be.below(1e-2); });"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:8000" }
+  ]
+}
+
