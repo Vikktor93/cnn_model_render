@@ -12,8 +12,8 @@ Este proyecto consiste en un servicio web que encapsula un modelo CNN (Keras/Ten
 
 El modelo fue entrenado para clasificación binaria con salida ```sigmoid(1)```, por lo que la probabilidad que retorna corresponde a la clase de índice 1 (ver ```artifacts/labels.json```).
 
-- **Estado actual:** API probada localmente con Uvicorn y Swagger.
-- **Despliegue en Render:** pendiente 
+- **Estado actual:** API probada localmente con Uvicorn y Swagger. Además desplegada en Render.
+- **Despliegue en Render:** Realizado y Funcional
 
 ### Estructura del proyecto
 
