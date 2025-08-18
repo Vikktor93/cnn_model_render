@@ -18,7 +18,6 @@ El modelo fue entrenado para clasificación binaria con salida ```sigmoid(1)```,
 ### Estructura del proyecto
 
 ```
-.
 ├─ app/
 │  ├─ config.py       # configuración (IMG_SIZE, rutas, flags)
 │  ├─ inference.py    # carga bajo demanda del modelo y predicción
@@ -28,8 +27,19 @@ El modelo fue entrenado para clasificación binaria con salida ```sigmoid(1)```,
 ├─ artifacts/
 │  ├─ model.keras     # modelo entrenado (CNN)
 │  └─ labels.json     # etiquetas por índice
+├─ assets/            # imagenes utilizadas en el README.md
 ├─ client/
 │  └─ client.py       # script de pruebas (3 peticiones)
+├─ data/              # dataset de imagenes (*.jpg/*.png)
+│  ├─ train/
+│  │  ├─ chihuahua/         
+│  │  └─ muffin/
+│  └─ val/
+│     ├─ chihuahua/
+│     └─ muffin/
+├─ postman/ 
+│  ├─ MuffinsChihuahuasAPI.postman_collection.json
+│  ├─ MuffinsChihuahuasAPI.remote_environment.json
 ├─ scripts/
 │  └─ train_cnn.py     # entrenamiento + exportación de artifacts
 ├─ environment.yml     # entorno Conda (recomendado)
@@ -93,9 +103,9 @@ Realización de pruebas en Postman de la siguiente manera:
 
 1. Abrir Postman → Import → Raw text y se importan dos archivos json:
     - **Colección:** ```MuffinsChihuahuasAPI.postman_collection.json```.
-    - **Entorno remoto:** ```MuffinsChihuahuasAPI.remote_environment.json```
+    - **Entorno local:** ```MuffinsChihuahuasAPI.local_environment.json```
 
-2. Seleccionar el entorno “Muffins API – Remote” 
+2. Seleccionar el entorno “Muffins API – Local” 
 3. Ejecutar en orden:
     - Health → 200 con ```{ "status": "ok" }```
     - Predict (URL → muffin) → 200 con ```label```, ```score```, ```probabilities```
