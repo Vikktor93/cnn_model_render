@@ -82,3 +82,63 @@ $img = "https://cdn.pixabay.com/photo/2014/09/19/21/47/chihuahua-453063_1280.jpg
 $body = @{ image_url = $img } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/predict" -Body $body -ContentType "application/json"
 ```
+
+### Cómo hacer peticiones a la API (payloads)
+
+#### Endpoint
+- ```GET /health``` → verifica carga de artefactos
+- ```POST /predict``` → clasificación de imagen
+
+
+#### Request body (Se debe elegir uno)
+
+Por URL
+```json
+{
+  "image_url": "https://recetaamericana.com/wp-content/uploads/2022/07/mejor-magdalenas-chispas-chocolate-300x300.jpg"
+}
+```
+Por Base64
+```json
+{
+  "image_b64": "<CADENA_BASE64>"
+}
+```
+Ejemplo de Respuesta (200)
+```json
+{
+  "label": "muffin",
+  "score": 0.9931,
+  "probabilities": {
+    "muffin": 0.9931,
+    "chihuahua": 0.0069
+  }
+}
+```
+Ejemplo de Errores (400)
+- Estructura inválida (ambos o ninguno):
+    ```json
+    {"detail":"Debes enviar exactamente uno: 'image_url' o 'image_b64'."}
+    ```
+- Imagen/base64 inválidos:
+    ```json
+    {"detail":"prediction_error: <detalle>"}
+    ```
+
+### Cliente Externo (3 requests)
+
+Script que realiza tres peticiones: 2 por URL (muffin/chihuahua) y 1 por base64 (imagen local).  
+
+```bash
+# Local:
+# PowerShell : $env:API_URL="http://127.0.0.1:8000"
+
+# Producción (Render):
+# PowerShell : $env:API_URL="https://cnn-model-render.onrender.com"
+
+python client/client.py
+```
+
+```client/client.py``` imprime entrada y salida por cada request.
+
+ ***Estado:** probado localmente (Uvicorn) y en producción (Render) con respuestas correctas*
